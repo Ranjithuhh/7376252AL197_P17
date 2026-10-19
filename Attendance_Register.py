@@ -93,7 +93,7 @@ def Save_Attendance(attendance, filename):
 
     except OSError:
         print("Error writing to file.")
-        
+
 #=====================================================
 # Valid date checker function
 def CheckLeap(year):
@@ -180,11 +180,60 @@ def MarkAttendance():
     print(f"Attendance marked successfully for:{date}")
     print(f"Students present: {present_count}/{len(students)}")
 
-            
+ #============================================================           
     
 #Menu 3
 def EditAttendance():
-    print("Edited Attendance")
+    date = input("Enter the date to edit(DD-MM-YYYY):").strip()
+    if(not Validate_Date(date)):
+        print("Invalid date!")
+
+    if date not in attendance:
+        print(f"Attendance havn't marked for this date:{date}")
+        return
+        
+    edit_field = input("Enter which should be edited(date(1)/Reg-numbers(2)):").strip().lower()
+
+    if(edit_field=='1' or edit_field=="date"):
+        new_date = input("Enter new date to replace:").strip()
+        if(not Validate_Date(new_date)):
+            print("Invalid date!")
+            return
+
+        if new_date!=date and new_date in attendance:
+            print("Attendance already exists for the new date!")
+            return
+
+        absent_list = attendance.pop(date)
+        attendance[new_date] = absent_list
+
+    elif(edit_field=='2' or edit_field=="reg-numbers"):
+        absent_input = input("Enter Reg-number seperated by comma(,) or '-' if none:").strip()
+
+        if absent_input=="-":
+            absent_list = []
+        else:
+            absent_list = [reg.strip() for reg in absent_input.split(",")]
+
+            if any(not reg for reg in absent_list):
+                print("Register numbers cannot be empty!")
+                return 
+            
+            if len(absent_list)!=len(set((absent_list))):
+                print("Duplicate Register numbers entered.")
+                return
+            
+            for reg in absent_list:
+                if reg not in students:
+                    print(f"Invalid Register number.{reg}")
+                    return
+        attendance[date] = absent_list
+    else:
+        print("Invalid editing option!")
+        return
+
+    Save_Attendance(attendance, "Attendance.txt")
+    print("Attendance updated successfully!")
 
 #Menu 4
 def ShowStudentAttendance():
