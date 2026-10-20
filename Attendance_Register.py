@@ -1,12 +1,12 @@
 
 
-
-print("=========================")
-print("   Attendance Register")
-print("=========================")
+print()
+print("="*120)
+print("ATTENDANCE REGISTER".center(120))
+print("="*120)
 print()
 
-# Loading Students file into list of dictionaries
+# Loading Students file into dictionaries
 def Load_Students(filename):
     students = {}
 
@@ -129,19 +129,25 @@ attendance = Load_Attendance("Attendance.txt")
 
 
 #Menu 1
-def ViewStudentlist():
-    print("Showing students list")
-    print("---------------------")
-    try:
-        with open("Students.txt","r") as file:
-            print(file.read())
-    except FileNotFoundError:
-        print("File not found. Check filename or filepath.")
+def ViewStudentlist(students):
+    print()
+    print("=== Students List ===")
+    print(f"{'Reg No':<10} {'Name':<15}")
+    print("-"*20)
+
+    for reg,name in students.items():
+        print(f"{reg:<10} {name:<15}\n")
+    
+    # try:
+    #     with open("Students.txt","r") as file:
+    #         print(file.read())
+    # except FileNotFoundError:
+    #     print("File not found. Check filename or filepath.")
 
 #Menu 2
 def MarkAttendance():
     # Validating the entered Date      
-    date = input("Enter Date(DD-MM-YYYY):").strip()
+    date = input("Enter Date(DD-MM-YYYY): ").strip()
     if(not Validate_Date(date)):
         print("Invalid Date!")
         return
@@ -150,7 +156,7 @@ def MarkAttendance():
         print("Attendance already marked for this date.")
         return
 
-    absent_reg = input("Enter the Absent Reg-Numbers(Comma(,) seperated, '-' if none):").strip()
+    absent_reg = input("Enter the Absent Reg-Numbers(Comma(,) seperated, '-' if none): ").strip()
 
     if absent_reg == "-":
         absent_list = []
@@ -177,25 +183,25 @@ def MarkAttendance():
 
     present_count = len(students) - len(absent_list)
 
-    print(f"Attendance marked successfully for:{date}")
+    print(f"Attendance marked successfully for: {date}")
     print(f"Students present: {present_count}/{len(students)}")
 
  #============================================================           
     
 #Menu 3
 def EditAttendance():
-    date = input("Enter the date to edit(DD-MM-YYYY):").strip()
+    date = input("Enter the date to edit(DD-MM-YYYY): ").strip()
     if(not Validate_Date(date)):
         print("Invalid date!")
 
     if date not in attendance:
-        print(f"Attendance havn't marked for this date:{date}")
+        print(f"Attendance havn't marked for this date: {date}")
         return
         
-    edit_field = input("Enter which should be edited(date(1)/Reg-numbers(2)):").strip().lower()
+    edit_field = input("Enter which should be edited(date(1)/Reg-numbers(2)): ").strip().lower()
 
     if(edit_field=='1' or edit_field=="date"):
-        new_date = input("Enter new date to replace:").strip()
+        new_date = input("Enter new date to replace(DD-MM-YYYY): ").strip()
         if(not Validate_Date(new_date)):
             print("Invalid date!")
             return
@@ -208,7 +214,7 @@ def EditAttendance():
         attendance[new_date] = absent_list
 
     elif(edit_field=='2' or edit_field=="reg-numbers"):
-        absent_input = input("Enter Reg-number seperated by comma(,) or '-' if none:").strip()
+        absent_input = input("Enter Reg-number seperated by comma(,) or '-' if none: ").strip()
 
         if absent_input=="-":
             absent_list = []
@@ -236,14 +242,62 @@ def EditAttendance():
     print("Attendance updated successfully!")
 
 #Menu 4
-def ShowStudentAttendance():
-    print("Showing attendance")
-    
+def ShowStudentAttendance(attendance):
+    if not attendance:
+        print("No attendance record available.")
+        return
+    #Calculate Classes held
+    classes_held = len(attendance)
+
+    print("====================== Student Attendance ====================")
+    print(f"{'Reg No':<15} {'Name':<15} {'Attended':<10} {'Held':<8} {'Percentage':<12}")
+    print("-" * 62)
+
+    for reg,name in students.items():
+        classes_absent = 0
+        for absent_list in attendance.values():
+            if reg in absent_list:
+                classes_absent+=1
+
+        classes_attended = classes_held - classes_absent
+        attendance_percentage = (classes_attended/classes_held)*100
+        attendance_percentage = f"{attendance_percentage:.2f}%"
+
+       
+        print(f"{reg:<15} {name:<15} {classes_attended:<10} {classes_held:<8} {attendance_percentage:<11}\n")
+
 
 #Menu 5
-def Studentsbelow75():
-    print("Listing below 75% students")
+def Studentsbelow75(attendance):
+    print("==================================== Students Below 75% ======================================")
+    print(f"{'Reg No':<15} {'Name':<15} {'Held':<15} {'Attended':<15} {'Percentage':<15} {'Classes Needed':<15}")
+    print("-" * 94)
 
+    if not attendance:
+        print("No attendancee record available")
+        return
+    found = False
+    #Calculate attendance percentage
+    classes_held = len(attendance)
+
+    for reg,name in students.items():
+        classes_absent = 0
+        for absent_list in attendance.values():
+            if reg in absent_list:
+                classes_absent+=1
+        classes_attended = classes_held - classes_absent
+        attendance_percentage = (classes_attended/classes_held)*100
+        # attendance_percentage = f"{attendance_percentage:.2f}%"
+
+        if attendance_percentage < 75:
+            found = True
+            attendance_percentage = f"{attendance_percentage:.2f}%"
+            classes_needed = 3*classes_held - 4*classes_attended
+            print(f"{reg:<15} {name:<15} {classes_held:<15} {classes_attended:<15} {attendance_percentage:<15} {classes_needed:<15}\n")
+
+
+    if not found:
+        print("All students have at least 75% attendance.")
 
 #Menu 6
 def StudentMonthlyReport():
@@ -267,7 +321,7 @@ while True:
         break
     
     elif option==1:
-        ViewStudentlist()
+        ViewStudentlist(students)
         print()
 
     elif option==2:
@@ -279,29 +333,12 @@ while True:
         print()
 
     elif option==4:
-        ShowStudentAttendance()
+        ShowStudentAttendance(attendance)
         print()
 
     elif option==5:
-        Studentsbelow75()
+        Studentsbelow75(attendance)
         print()
 
     elif option==6:
         StudentMonthlyReport()
-
-
-
-
-    
-        
-
-
-
-
-
-
-
-
-
-
-    
