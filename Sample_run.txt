@@ -18,7 +18,7 @@ $ python Attendance_Register.py
 
 Enter Your Choice: 1
 
-=== Students List ===
+=== STUDENTS LIST ===
 Reg No     Name
 --------------------
 101        Arun
@@ -34,47 +34,54 @@ Reg No     Name
 
 
 Enter Your Choice: 2
+========== MARK ATTENDANCE ==========
 Enter Date(DD-MM-YYYY): 16-10-2026
 Enter Absent Reg-Numbers(',' seperated, '-' if none): 101,102
 Attendance marked successfully for: 16-10-2026
 Students present: 8/10
 
 Enter Your Choice: 2
+========== MARK ATTENDANCE ==========
 Enter Date(DD-MM-YYYY): 17-10-2026
 Enter Absent Reg-Numbers(',' seperated, '-' if none): 101,103
 Attendance marked successfully for: 17-10-2026
 Students present: 8/10
 
 Enter Your Choice: 2
+========== MARK ATTENDANCE ==========
 Enter Date(DD-MM-YYYY): 18-10-2026
 Enter Absent Reg-Numbers(',' seperated, '-' if none): 101
 Attendance marked successfully for: 18-10-2026
 Students present: 9/10
 
 Enter Your Choice: 2
+========== MARK ATTENDANCE ==========
 Enter Date(DD-MM-YYYY): 19-10-2026
 Enter Absent Reg-Numbers(',' seperated, '-' if none): 102
 Attendance marked successfully for: 19-10-2026
 Students present: 9/10
 
 Enter Your Choice: 2
+========== MARK ATTENDANCE ==========
 Enter Date(DD-MM-YYYY): 19-10-2026
 Attendance already marked for this date. 19-10-2026
 
 Enter Your Choice: 3
+========== EDIT ATTENDANCE ==========
 Enter the date to edit(DD-MM-YYYY): 19-10-2026
 Enter which should be edited(date(1)/Reg-numbers(2)): 1
 Enter new date to replace(DD-MM-YYYY): 20-10-2026
 Attendance updated successfully!
 
 Enter Your Choice: 3
+========== EDIT ATTENDANCE ==========
 Enter the date to edit(DD-MM-YYYY): 20-10-2026
 Enter which should be edited(date(1)/Reg-numbers(2)): 2
 Enter Reg-number seperated by comma(,) or '-' if none: -
 Attendance updated successfully!
 
 Enter Your Choice: 4
-====================== Student Attendance ====================
+====================== STUDENT ATTENDANCE ====================
 Reg No          Name            Attended   Held     Percentage
 --------------------------------------------------------------
 101             Arun            1          4        25.00%
@@ -89,7 +96,7 @@ Reg No          Name            Attended   Held     Percentage
 110             Hari            4          4        100.00%
 
 Enter Your Choice: 5
-==================================== Students Below 75% ======================================
+==================================== STUDENTS BELOW 75% ======================================
 Reg No          Name            Held            Attended        Percentage      Classes Needed
 ----------------------------------------------------------------------------------------------
 101             Arun            4               1               25.00%          8
