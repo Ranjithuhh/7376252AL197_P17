@@ -1,0 +1,130 @@
+AIXCELERATE P17 - ATTENDANCE REGISTER
+REPRESENTATIVE SAMPLE TERMINAL SESSION
+======================================
+
+The following session demonstrates all menu features. Example student names
+and register numbers are used.
+
+$ python Attendance_Register.py
+
+1. === View-Students-List
+2. === Mark-Attendance
+3. === Edit-Attendance
+4. === View-Student-Attendance
+5. === Students-Below-75%
+6. === Student-Monthly-Report
+7. === Present-Count_by-Date
+8. === Exit
+
+Enter Your Choice: 1
+
+=== Students List ===
+Reg No     Name
+--------------------
+101        Arun
+102        Guna
+103        Priya
+104        Ravi
+105        Meena
+106        Kavin
+107        Divya
+108        Sanjay
+109        Nila
+110        Hari
+
+
+Enter Your Choice: 2
+Enter Date(DD-MM-YYYY): 16-10-2026
+Enter Absent Reg-Numbers(',' seperated, '-' if none): 101,102
+Attendance marked successfully for: 16-10-2026
+Students present: 8/10
+
+Enter Your Choice: 2
+Enter Date(DD-MM-YYYY): 17-10-2026
+Enter Absent Reg-Numbers(',' seperated, '-' if none): 101,103
+Attendance marked successfully for: 17-10-2026
+Students present: 8/10
+
+Enter Your Choice: 2
+Enter Date(DD-MM-YYYY): 18-10-2026
+Enter Absent Reg-Numbers(',' seperated, '-' if none): 101
+Attendance marked successfully for: 18-10-2026
+Students present: 9/10
+
+Enter Your Choice: 2
+Enter Date(DD-MM-YYYY): 19-10-2026
+Enter Absent Reg-Numbers(',' seperated, '-' if none): 102
+Attendance marked successfully for: 19-10-2026
+Students present: 9/10
+
+Enter Your Choice: 2
+Enter Date(DD-MM-YYYY): 19-10-2026
+Attendance already marked for this date. 19-10-2026
+
+Enter Your Choice: 3
+Enter the date to edit(DD-MM-YYYY): 19-10-2026
+Enter which should be edited(date(1)/Reg-numbers(2)): 1
+Enter new date to replace(DD-MM-YYYY): 20-10-2026
+Attendance updated successfully!
+
+Enter Your Choice: 3
+Enter the date to edit(DD-MM-YYYY): 20-10-2026
+Enter which should be edited(date(1)/Reg-numbers(2)): 2
+Enter Reg-number seperated by comma(,) or '-' if none: -
+Attendance updated successfully!
+
+Enter Your Choice: 4
+====================== Student Attendance ====================
+Reg No          Name            Attended   Held     Percentage
+--------------------------------------------------------------
+101             Arun            1          4        25.00%
+102             Guna            3          4        75.00%
+103             Priya           3          4        75.00%
+104             Ravi            4          4        100.00%
+105             Meena           4          4        100.00%
+106             Kavin           4          4        100.00%
+107             Divya           4          4        100.00%
+108             Sanjay          4          4        100.00%
+109             Nila            4          4        100.00%
+110             Hari            4          4        100.00%
+
+Enter Your Choice: 5
+==================================== Students Below 75% ======================================
+Reg No          Name            Held            Attended        Percentage      Classes Needed
+----------------------------------------------------------------------------------------------
+101             Arun            4               1               25.00%          8
+
+Enter Your Choice: 6
+========== MONTH-WISE ATTENDANCE REPORT ==========
+
+Enter Student Register number for Monthly Report: 101
+Enter the month and year (MM-YYYY): 10-2026
+
+========== REPORT =========
+Register Number:  101
+Student Name:  Arun
+Month: October 2026
+Classes Held:  4
+Classes Attended:  1
+Classes Absent:  3
+Attendance: 25.00%
+
+Enter Your Choice: 7
+========== PRESENT COUNT BY DATE ===========
+Enter Date(DD-MM-YYYY): 19-10-2026
+
+Date:  19-10-2026
+Total Students:  10
+Students Absent:  0
+Students Present:  10
+
+Enter Your Choice: 7
+========== PRESENT COUNT BY DATE ===========
+Enter Date(DD-MM-YYYY): 01-09-2026
+Attendance has not been marked for this date: 01-09-2026
+
+Enter Your Choice: 8
+Attendance closing...
+
+END OF SAMPLE SESSION
+=====================

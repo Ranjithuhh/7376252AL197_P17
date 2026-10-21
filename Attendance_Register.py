@@ -1,4 +1,7 @@
-
+#NAME: RANJITHKUMAR M
+#REG NO: 7376252AL197
+#TITLE: ATTENDANCE REGISTER
+#TITLE NO: P17
 
 print()
 print("="*120)
@@ -72,8 +75,8 @@ def Load_Attendance(filename):
         return attendance
     
     except FileNotFoundError:
-        print("File not found. starting with an empty attendance list")
-        return [] 
+        print("Attendance File not found. starting with an empty attendance dictionary!")
+        return {}
 #===================================================
 
 # Updating the Original file
@@ -101,24 +104,39 @@ def CheckLeap(year):
 
 def Validate_Date(date):
     parts = date.split("-")
-    if len(parts)!=3:
+
+    # Check the number of components
+    if len(parts) != 3:
         return False
-    
-    try:
-        day = int(parts[0])
-        month = int(parts[1])
-        year = int(parts[2])
-    except ValueError:
+
+    day, month, year = parts
+
+    # Check exact format: DD-MM-YYYY
+    if (len(day) != 2 or len(month) != 2 or len(year) != 4):
         return False
-    
-    if year<1 or month<1 or month>12 or day<1:
+
+    # Ensure all components contain digits
+    if not (day.isdigit() and month.isdigit() and year.isdigit()):
         return False
-    
-    days_in_month = [31,28,31,30,31,30,31,31,30,31,30,31]
-    if(CheckLeap(year)):
+
+    day = int(day)
+    month = int(month)
+    year = int(year)
+
+    # Validate month
+    if month < 1 or month > 12:
+        return False
+
+    # Days in each month
+    days_in_month = [31, 28, 31, 30, 31, 30,
+                     31, 31, 30, 31, 30, 31]
+
+    # Leap year check
+    if CheckLeap(year):
         days_in_month[1] = 29
 
-    if day>days_in_month[month-1]:
+    # Validate day
+    if day < 1 or day > days_in_month[month - 1]:
         return False
 
     return True
@@ -128,35 +146,36 @@ students = Load_Students("Students.txt")
 attendance = Load_Attendance("Attendance.txt")
 
 
-#Menu 1
+#Menu 1 
 def ViewStudentlist(students):
     print()
-    print("=== Students List ===")
+    if not students:
+        print("No students record available!")
+        return
+    print("=== STUDENTS LIST ===")
     print(f"{'Reg No':<10} {'Name':<15}")
     print("-"*20)
 
     for reg,name in students.items():
         print(f"{reg:<10} {name:<15}\n")
     
-    # try:
-    #     with open("Students.txt","r") as file:
-    #         print(file.read())
-    # except FileNotFoundError:
-    #     print("File not found. Check filename or filepath.")
-
 #Menu 2
 def MarkAttendance():
-    # Validating the entered Date      
+    # Validating the entered Date    
+    if not students:
+        print("No students record available!")
+        return
+    print("\n========== MARK ATTENDNACE ==========")
     date = input("Enter Date(DD-MM-YYYY): ").strip()
     if(not Validate_Date(date)):
-        print("Invalid Date!")
+        print("Invalid Date!\nCheck date and enter valid date.")
         return
 
     if date in attendance:
-        print("Attendance already marked for this date.")
+        print("Attendance already marked for this date:",date)
         return
 
-    absent_reg = input("Enter the Absent Reg-Numbers(Comma(,) seperated, '-' if none): ").strip()
+    absent_reg = input("Enter Absent Reg-Numbers(',' seperated, '-' if none): ").strip()
 
     if absent_reg == "-":
         absent_list = []
@@ -173,7 +192,7 @@ def MarkAttendance():
 
         for reg in absent_list:
             if reg not in students:
-                print(f"Invalid Register number.{reg}")
+                print(f"No Students belong to this Register number.{reg}")
                 return
              
     # Update the attendance file
@@ -190,10 +209,21 @@ def MarkAttendance():
     
 #Menu 3
 def EditAttendance():
+    print()
+    if not students:
+            print("No students record available!")
+            return
+    
+    print("\n========== EDIT ATTENDANCE ==========")
+    if not attendance:
+        print("No attendance records available.")
+        return
+    
     date = input("Enter the date to edit(DD-MM-YYYY): ").strip()
     if(not Validate_Date(date)):
-        print("Invalid date!")
-
+        print("Invalid date!\nCheck date and enter valid date.")
+        return
+    
     if date not in attendance:
         print(f"Attendance havn't marked for this date: {date}")
         return
@@ -203,7 +233,7 @@ def EditAttendance():
     if(edit_field=='1' or edit_field=="date"):
         new_date = input("Enter new date to replace(DD-MM-YYYY): ").strip()
         if(not Validate_Date(new_date)):
-            print("Invalid date!")
+            print("Invalid date!\nCheck date and enter valid date.")
             return
 
         if new_date!=date and new_date in attendance:
@@ -231,7 +261,7 @@ def EditAttendance():
             
             for reg in absent_list:
                 if reg not in students:
-                    print(f"Invalid Register number.{reg}")
+                    print(f"Invalid Register number:{reg}")
                     return
         attendance[date] = absent_list
     else:
@@ -243,13 +273,17 @@ def EditAttendance():
 
 #Menu 4
 def ShowStudentAttendance(attendance):
+    if not students:
+            print("No students record available!")
+            return
+    
     if not attendance:
-        print("No attendance record available.")
+        print("No attendance records available.")
         return
     #Calculate Classes held
     classes_held = len(attendance)
-
-    print("====================== Student Attendance ====================")
+    
+    print("\n====================== STUDENT ATTENDANCE ====================")
     print(f"{'Reg No':<15} {'Name':<15} {'Attended':<10} {'Held':<8} {'Percentage':<12}")
     print("-" * 62)
 
@@ -269,12 +303,16 @@ def ShowStudentAttendance(attendance):
 
 #Menu 5
 def Studentsbelow75(attendance):
-    print("==================================== Students Below 75% ======================================")
+    if not students:
+            print("No students record available!")
+            return
+    
+    print("\n==================================== STUDENTS BELOW 75% ======================================")
     print(f"{'Reg No':<15} {'Name':<15} {'Held':<15} {'Attended':<15} {'Percentage':<15} {'Classes Needed':<15}")
     print("-" * 94)
 
     if not attendance:
-        print("No attendancee record available")
+        print("No attendance records available")
         return
     found = False
     #Calculate attendance percentage
@@ -300,45 +338,156 @@ def Studentsbelow75(attendance):
         print("All students have at least 75% attendance.")
 
 #Menu 6
-def StudentMonthlyReport():
-    print("Showing Monthly Report.")
-
-
-while True:
-
-    print("1. View Students list")
-    print("2. Mark Attendance")
-    print("3. Edit Attendance")
-    print("4. Show Student Attendance")
-    print("5. Students below 75%")
-    print("6. Student Monthly report")
-    print("7. Exit")
-    print()
-    option = int(input("Enter Option:"))
-
-    if option==7:
-        print("Attendance closing...")
-        break
+def MonthWiseReport():
+    if not students:
+            print("No students record available!")
+            return
+    if not attendance:
+        print("No attendance records available!")
+        return
     
-    elif option==1:
+    print("\n========== MONTH-WISE ATTENDANCE REPORT ==========")
+    print()
+
+    reg_no = input("Enter Student Register number for Monthly Report: ").strip()
+
+    if not reg_no:
+        print("Register number cannot be empty!")
+        return
+
+    if reg_no not in students:
+        print("Register number doesn't exist!")
+        return
+
+    month_year = input("Enter the month and year (MM-YYYY): ").strip()
+    parts = month_year.split("-")
+
+    if len(parts) != 2 or not all(part.isdigit() for part in parts):
+        print("Invalid format! Use MM-YYYY.")
+        return
+
+    requested_month = int(parts[0])
+    requested_year = int(parts[1])
+
+    if requested_month < 1 or requested_month > 12:
+        print("Invalid month or year!")
+        return
+
+    classes_held = 0
+    classes_absent = 0
+
+    name = students[reg_no]
+
+    for date,absent_list in attendance.items():
+        date_parts = date.split("-")
+        month = date_parts[1]
+        year = date_parts[2]
+
+        if month == f"{requested_month:02d}" and year == str(requested_year):
+            classes_held+=1
+            if reg_no in absent_list:
+                classes_absent+=1
+
+    if classes_held == 0:
+        print("No classes held in this month!")
+        return
+
+    month_map = {
+    '01': "January",
+    '02': "February",
+    '03': "March",
+    '04': "April",
+    '05': "May",
+    '06': "June",
+    '07': "July",
+    '08': "August",
+    '09': "September",
+    '10': "October",
+    '11': "November",
+    '12': "December"
+    }
+    classes_attended = classes_held - classes_absent
+    attendance_percentage = (classes_attended/classes_held)*100
+    print()
+    print("========== REPORT =========")
+    print("Register Number: ",reg_no)
+    print("Student Name: ",name)
+    print("Month:", month_map[f"{requested_month:02d}"], requested_year)
+    print("Classes Held: ",classes_held)
+    print("Classes Attended: ",classes_attended)
+    print("Classes Absent: ",classes_absent)
+    print(f"Attendance: {attendance_percentage:.2f}%",)
+
+#Menu 7
+def PresentCountbyDate():
+    if not students:
+            print("No students record available!")
+            return
+    if not attendance:
+            print("No attendance records available!")
+            return
+    
+    print("\n========== PRESENT COUNT BY DATE ===========")
+    date = input("Enter Date(DD-MM-YYYY): ").strip()
+
+    if(not Validate_Date(date)):
+        print("Invalid Date!\nCheck date and enter valid date.")
+        return
+    
+    if date not in attendance:
+        print("Attendance has not been marked for this date:", date)
+        return
+
+    total_students = len(students)
+    students_absent = len(attendance[date])
+    students_present = total_students - students_absent
+
+    print("\nDate: ",date)
+    print("Total Students: ",total_students)
+    print("Students Absent: ",students_absent)
+    print("Students Present: ",students_present)
+
+
+#MAIN FUNCTION
+while True:
+    print("1. === View-Students-List")
+    print("2. === Mark-Attendance")
+    print("3. === Edit-Attendance")
+    print("4. === View-Student-Attendance")
+    print("5. === Students-Below-75%")
+    print("6. === Student-Monthly-Report")
+    print("7. === Present-Count-by-Date")
+    print("8. === Exit")
+
+    try:
+        option = int(input("Enter Your Choice: "))
+    except ValueError:
+        print("Invalid input! Please enter a number between 1 and 8.\n")
+        continue
+
+    if option == 1:
         ViewStudentlist(students)
         print()
-
-    elif option==2:
+    elif option == 2:
         MarkAttendance()
         print()
-
-    elif option==3:
+    elif option == 3:
         EditAttendance()
         print()
-
-    elif option==4:
+    elif option == 4:
         ShowStudentAttendance(attendance)
         print()
-
-    elif option==5:
+    elif option == 5:
         Studentsbelow75(attendance)
         print()
-
-    elif option==6:
-        StudentMonthlyReport()
+    elif option == 6:
+        MonthWiseReport()
+        print()
+    elif option == 7:
+        PresentCountbyDate()
+        print()
+    elif option == 8:
+        print("\nATTENDANCE CLOSING...")
+        break
+    else:
+        print("Invalid option! Your valid options are 1 to 8.\n")
