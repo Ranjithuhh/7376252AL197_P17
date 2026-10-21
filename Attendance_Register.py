@@ -4,12 +4,12 @@
 #TITLE NO: P17
 
 print()
-print("="*120)
-print("ATTENDANCE REGISTER".center(120))
-print("="*120)
+print("="*148)
+print("A T T E N D A N C E    R E G I S T E R".center(140))
+print("="*148)
 print()
 
-# Loading Students file into dictionaries
+# Loading Students file into dictionary
 def Load_Students(filename):
     students = {}
 
@@ -35,10 +35,11 @@ def Load_Students(filename):
                 students[reg_no] = name
 
     except FileNotFoundError:
-        print("Student file not found. Starting with an empty list.")
+        print("Student file not found.")
+        return
 
     return students
-#============================================================
+
 
 # Loading Attendance file into Dictionary
 def Load_Attendance(filename):
@@ -77,7 +78,7 @@ def Load_Attendance(filename):
     except FileNotFoundError:
         print("Attendance File not found. starting with an empty attendance dictionary!")
         return {}
-#===================================================
+
 
 # Updating the Original file
 def Save_Attendance(attendance, filename):
@@ -97,7 +98,7 @@ def Save_Attendance(attendance, filename):
     except OSError:
         print("Error writing to file.")
 
-#=====================================================
+
 # Valid date checker function
 def CheckLeap(year):
     return year % 400 == 0 or (year % 4 == 0 and year % 100 != 0)
@@ -141,12 +142,12 @@ def Validate_Date(date):
 
     return True
 
-#=====================================================
+#Load and save students and attendance files when program starts
 students = Load_Students("Students.txt")
 attendance = Load_Attendance("Attendance.txt")
 
 
-#Menu 1 
+#Menu 1 - To List Students
 def ViewStudentlist(students):
     print()
     if not students:
@@ -159,7 +160,7 @@ def ViewStudentlist(students):
     for reg,name in students.items():
         print(f"{reg:<10} {name:<15}\n")
     
-#Menu 2
+#Menu 2 - To Mark Attendance
 def MarkAttendance():
     # Validating the entered Date    
     if not students:
@@ -207,7 +208,7 @@ def MarkAttendance():
 
  #============================================================           
     
-#Menu 3
+#Menu 3 - To Edit Attendance
 def EditAttendance():
     print()
     if not students:
@@ -271,7 +272,8 @@ def EditAttendance():
     Save_Attendance(attendance, "Attendance.txt")
     print("Attendance updated successfully!")
 
-#Menu 4
+
+#Menu 4 - To Show Detailed View of Student Attendance
 def ShowStudentAttendance(attendance):
     if not students:
             print("No students record available!")
@@ -301,7 +303,7 @@ def ShowStudentAttendance(attendance):
         print(f"{reg:<15} {name:<15} {classes_attended:<10} {classes_held:<8} {attendance_percentage:<11}\n")
 
 
-#Menu 5
+#Menu 5 - To List Students Below 75%
 def Studentsbelow75(attendance):
     if not students:
             print("No students record available!")
@@ -337,7 +339,8 @@ def Studentsbelow75(attendance):
     if not found:
         print("All students have at least 75% attendance.")
 
-#Menu 6
+
+#Menu 6 - To Show Month-Wise Report of a Student
 def MonthWiseReport():
     if not students:
             print("No students record available!")
@@ -418,7 +421,8 @@ def MonthWiseReport():
     print("Classes Absent: ",classes_absent)
     print(f"Attendance: {attendance_percentage:.2f}%",)
 
-#Menu 7
+
+#Menu 7 - To Show Date-Wise Present Count
 def PresentCountbyDate():
     if not students:
             print("No students record available!")
@@ -460,7 +464,7 @@ while True:
     print("8. === Exit")
 
     try:
-        option = int(input("Enter Your Choice: "))
+        option = int(input("Enter Your Choice(1-8): "))
     except ValueError:
         print("Invalid input! Please enter a number between 1 and 8.\n")
         continue
